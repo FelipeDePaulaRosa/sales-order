@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Domain.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -26,7 +27,8 @@ public class ExceptionFilter : IExceptionFilter
         {
             StatusCode = exception switch
             {
-                InvalidOperationException => (int)HttpStatusCode.BadRequest,
+                SalesOrderApiException => (int)HttpStatusCode.BadRequest,
+                SalesOrderNotFoundException => (int)HttpStatusCode.NotFound,
                 _ => (int)HttpStatusCode.InternalServerError
             }
         };
