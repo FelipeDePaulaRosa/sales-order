@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: sales-order-database
+    environment:
+      SA_PASSWORD: Sqlserver@123
+      ACCEPT_EULA: Y
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    networks:
+      - sales-order
+
+networks:
+  sales-order:
+    driver: bridge
