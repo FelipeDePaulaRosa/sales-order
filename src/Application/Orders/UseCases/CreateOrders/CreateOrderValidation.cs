@@ -15,10 +15,12 @@ public class CreateOrderValidation : AbstractValidator<CreateOrderRequest>
         RuleFor(x => x.Number)
             .NotEmpty();
         
-        //TODO: Add a custom validation for duplicated Number
+        RuleFor(x => x)
+            .Must(NumberIsUnique)
+            .WithMessage("One order with the same number already exists");
         
         RuleFor(x => x.SaleDate)
-            .GreaterThanOrEqualTo(DateTime.UtcNow)
+            .Must(x => x.Date.Date >= DateTime.UtcNow.Date)
             .WithMessage("'SaleDate' must be greater than or equal to the current date");
 
         RuleFor(x => x.Amount)
@@ -31,11 +33,9 @@ public class CreateOrderValidation : AbstractValidator<CreateOrderRequest>
             .NotNull();
     }
     
-    private bool BeUniqueNumber(string number)
-    {
-        return !_orderRepository
+    private bool NumberIsUnique(CreateOrderRequest request)
+        => !_orderRepository
             .GetDbSet()
             .AsNoTracking()
-            .Any(x => x.Number == number);
-    }
+            .Any(x => x.Number == request.Number);
 }
