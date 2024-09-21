@@ -8,6 +8,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
+        builder.ToTable("Order");
+        
         builder.HasKey(x => x.Id);
         
         builder.Property(x => x.Number)
@@ -22,6 +24,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             amount.Property(x => x.ValueInCents)
                 .IsRequired()
                 .HasColumnName("Amount");
+
+            amount.Ignore(x => x.Value);
         });
         
         builder.OwnsOne(x => x.Status, status =>

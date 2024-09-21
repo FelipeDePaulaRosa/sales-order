@@ -8,6 +8,8 @@ public class OrderStatusHistoryConfiguration : IEntityTypeConfiguration<OrderSta
 {
     public void Configure(EntityTypeBuilder<OrderStatusHistory> builder)
     {
+        builder.ToTable("OrderStatusHistory");
+
         builder.HasKey(x => x.Id);
         
         builder.Property(x => x.OrderId)

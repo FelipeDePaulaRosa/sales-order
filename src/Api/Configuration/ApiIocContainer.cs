@@ -1,4 +1,5 @@
 ﻿using Api.Filters;
+using Infrastructure.Contexts;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ public static class ApiIocContainer
     {
         var connection = ConnectionDatabaseSettings.GetInstance(configuration);
         
-        services.AddDbContext<DbContext>(options =>
+        services.AddDbContext<OrderDbContext>(options =>
         {
             options.UseSqlServer(connection.DefaultConnection);
         });
