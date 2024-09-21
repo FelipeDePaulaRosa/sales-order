@@ -30,6 +30,10 @@ public class Order : AggregateRoot<Guid>
         CustomerId = customerId;
         MerchantId = merchantId;
     }
+    
+    public decimal GetAmountValue() => Amount.GetValueFromCents();
+    
+    public OrderStatusEnum GetCurrentStatusEnum() => Status.Status;
 
     private void MarkStatusAsCreated()
     {

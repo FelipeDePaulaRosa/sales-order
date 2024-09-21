@@ -1,22 +1,20 @@
-﻿using Application.Orders.Requests;
-using Application.Orders.Services.Contracts;
+﻿using Application.Orders.UseCases.CreateOrders;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 public class OrderController : ApiController
 {
-    private readonly IOrderService _orderService;
-    private readonly ILogger<ApiController> _logger;
-
-    public OrderController(IOrderService orderService, ILogger<ApiController> logger) : base(logger)
+    public OrderController(ISender sender, IHttpContextAccessor httpContextAccessor) 
+        : base(sender, httpContextAccessor)
     {
-        _orderService = orderService;
-        _logger = logger;
     }
-    
-    public async Task CreateOrder([FromBody] CreateOrderRequest order)
+
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
     {
-        // Create order
+        var response = await Sender.Send(request);
+        return Created(Path, response);
     }
 }

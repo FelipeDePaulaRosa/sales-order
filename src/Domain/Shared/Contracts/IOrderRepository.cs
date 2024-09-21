@@ -1,5 +1,4 @@
 ﻿using Domain.Orders;
-using Domain.Orders;
 
 namespace Domain.Shared.Contracts;
 

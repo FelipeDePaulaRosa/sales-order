@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -6,10 +7,12 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class ApiController : ControllerBase
 {
-    protected readonly ILogger<ApiController> Logger;
+    protected readonly ISender Sender;
+    protected readonly PathString Path;
 
-    public ApiController(ILogger<ApiController> logger)
+    public ApiController(ISender sender, IHttpContextAccessor httpContextAccessor)
     {
-        Logger = logger;
+        Sender = sender;
+        Path = httpContextAccessor.HttpContext?.Request.Path ?? PathString.Empty;
     }
 }
