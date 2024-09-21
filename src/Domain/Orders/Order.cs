@@ -4,7 +4,7 @@ namespace Domain.Orders;
 
 public class Order : AggregateRoot<Guid>
 {
-    public int Number { get; private set; }
+    public string Number { get; private set; }
     public DateTime SaleDate { get; private set; }
     public Money Amount { get; private set; }
     public OrderStatus Status { get; private set; }
@@ -12,14 +12,13 @@ public class Order : AggregateRoot<Guid>
     public Guid CustomerId { get; private set; }
     public Guid MerchantId { get; private set; }
     public List<OrderStatusHistory> StatusHistory { get; } = new();
-    
+
     private Order() { }
-    
+
     public Order(
-        int number,
+        string number,
         DateTime saleDate,
         decimal amount,
-        bool isCanceled,
         Guid customerId,
         Guid merchantId)
     {
@@ -27,12 +26,11 @@ public class Order : AggregateRoot<Guid>
         SaleDate = saleDate;
         Amount = Money.FromDecimal(amount);
         MarkStatusAsCreated();
-        IsCanceled = isCanceled;
+        IsCanceled = false;
         CustomerId = customerId;
         MerchantId = merchantId;
-        
     }
-    
+
     private void MarkStatusAsCreated()
     {
         Status = new OrderStatus(OrderStatusEnum.Created);
@@ -44,16 +42,14 @@ public class Order : AggregateRoot<Guid>
         Status = Status.ToUpdated();
         AddStatusHistory(OrderStatusEnum.Updated);
     }
-    
+
     public void MarkStatusAsCancelled()
     {
         Status = Status.ToCanceled();
         IsCanceled = true;
         AddStatusHistory(OrderStatusEnum.Updated);
     }
-    
+
     private void AddStatusHistory(OrderStatusEnum status)
-    {
-        StatusHistory.Add(new OrderStatusHistory(status));
-    }
+        => StatusHistory.Add(new OrderStatusHistory(status));
 }

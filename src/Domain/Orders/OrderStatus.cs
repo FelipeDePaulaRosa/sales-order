@@ -1,17 +1,11 @@
-﻿using Domain.Shared.Entities;
-
-namespace Domain.Orders;
+﻿namespace Domain.Orders;
 
 public class OrderStatus
 {
     public OrderStatusEnum Status { get; private set; }
     private Dictionary<OrderStatusEnum, List<OrderStatusEnum>> AllowedTransitions { get; set; } = new();
     
-    private OrderStatus()
-    {
-        Status = OrderStatusEnum.Created;
-        ConfigurePossibleTransitions();
-    }
+    private OrderStatus() { }
     
     public OrderStatus(OrderStatusEnum status)
     {

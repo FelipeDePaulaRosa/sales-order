@@ -4,10 +4,10 @@ namespace Domain.Orders;
 
 public class OrderStatusHistory : Entity<Guid>
 {
-    public string Message { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public OrderStatus Status { get; private set; }
     public Guid OrderId { get; private set; }
+    public string Message { get; private set; }
+    public OrderStatus Status { get; private set; }
+    public DateTime CreatedAt { get; private set; }
     
     private OrderStatusHistory() { }
     
