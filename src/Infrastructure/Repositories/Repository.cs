@@ -34,7 +34,9 @@ public class Repository<T, TKey> : IRepository<T, TKey>
     {
         await _context.SaveChangesAsync();
     }
-    
+
+    public DbSet<T> GetDbSet() => DbSet;
+
     private async Task FlushChangesAsync(bool saveChanges)
     {
         if (saveChanges)

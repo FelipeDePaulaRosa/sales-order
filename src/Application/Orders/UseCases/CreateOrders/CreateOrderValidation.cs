@@ -1,11 +1,17 @@
-﻿using FluentValidation;
+﻿using Domain.Shared.Contracts;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Orders.UseCases.CreateOrders;
 
 public class CreateOrderValidation : AbstractValidator<CreateOrderRequest>
 {
-    public CreateOrderValidation()
+    private readonly IOrderRepository _orderRepository;
+    
+    public CreateOrderValidation(IOrderRepository orderRepository)
     {
+        _orderRepository = orderRepository;
+        
         RuleFor(x => x.Number)
             .NotEmpty();
         
@@ -25,4 +31,11 @@ public class CreateOrderValidation : AbstractValidator<CreateOrderRequest>
             .NotNull();
     }
     
+    private bool BeUniqueNumber(string number)
+    {
+        return !_orderRepository
+            .GetDbSet()
+            .AsNoTracking()
+            .Any(x => x.Number == number);
+    }
 }
