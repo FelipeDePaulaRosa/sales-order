@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Orders.UseCases.CreateOrders;
 
-public class CreateOrderValidation : AbstractValidator<CreateOrderRequest>
+public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
 {
     private readonly IOrderRepository _orderRepository;
     
-    public CreateOrderValidation(IOrderRepository orderRepository)
+    public CreateOrderRequestValidator(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
         
@@ -24,7 +24,8 @@ public class CreateOrderValidation : AbstractValidator<CreateOrderRequest>
             .WithMessage("'SaleDate' must be greater than or equal to the current date");
 
         RuleFor(x => x.Amount)
-            .NotNull();
+            .NotNull()
+            .GreaterThan(0);
 
         RuleFor(x => x.CustomerId)
             .NotNull();
