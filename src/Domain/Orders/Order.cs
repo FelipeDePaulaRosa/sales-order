@@ -12,6 +12,8 @@ public class Order : AggregateRoot<Guid>
     public Guid CustomerId { get; private set; }
     public Guid MerchantId { get; private set; }
     public List<OrderStatusHistory> StatusHistory { get; } = new();
+    public List<OrderProduct> Products { get; } = new();
+    //TODO: List<Discount> OrderDiscounts { get; } = new();
 
     private Order() { }
 
@@ -24,7 +26,7 @@ public class Order : AggregateRoot<Guid>
     {
         Number = number;
         SaleDate = saleDate;
-        Amount = Money.FromDecimal(amount);
+        Amount = Money.FromDecimal(amount); //TODO: Calc amount from products and discounts
         MarkStatusAsCreated();
         IsCanceled = false;
         CustomerId = customerId;
