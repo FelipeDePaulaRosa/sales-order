@@ -47,11 +47,11 @@ public class Order : AggregateRoot<Guid>
         AddStatusHistory(OrderStatusEnum.Updated);
     }
 
-    public void MarkStatusAsCancelled()
+    public void MarkStatusAsCanceled()
     {
         Status = Status.ToCanceled();
         IsCanceled = true;
-        AddStatusHistory(OrderStatusEnum.Updated);
+        AddStatusHistory(OrderStatusEnum.Canceled);
     }
 
     private void AddStatusHistory(OrderStatusEnum status)

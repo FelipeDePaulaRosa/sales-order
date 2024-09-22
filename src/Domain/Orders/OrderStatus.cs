@@ -1,4 +1,6 @@
-﻿namespace Domain.Orders;
+﻿using Domain.Shared.Exceptions;
+
+namespace Domain.Orders;
 
 public class OrderStatus
 {
@@ -52,7 +54,7 @@ public class OrderStatus
     private void VerifyTransition(OrderStatusEnum newStatus)
     {
         if (!CanTransitionTo(newStatus))
-            throw new InvalidOperationException($"Cannot change status from {Status} to {newStatus}");
+            throw new SalesOrderApiException($"Cannot change status from {Status} to {newStatus}");
     }
     
     private bool CanTransitionTo(OrderStatusEnum newStatus)

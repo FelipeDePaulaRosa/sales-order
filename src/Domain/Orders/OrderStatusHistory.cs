@@ -20,4 +20,6 @@ public class OrderStatusHistory : Entity<Guid>
         CreatedAt = DateTime.UtcNow;
         Status = new OrderStatus(status);
     }
+    
+    public OrderStatusEnum GetStatusEnum() => Status.Status;
 }
