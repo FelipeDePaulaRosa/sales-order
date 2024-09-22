@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations;
+namespace Infrastructure.Configurations.Orders;
 
 public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
@@ -47,6 +47,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .IsRequired();
 
         builder.HasMany(x => x.StatusHistory)
+            .WithOne()
+            .HasForeignKey(x => x.OrderId);
+        
+        builder.HasMany(x => x.Products)
             .WithOne()
             .HasForeignKey(x => x.OrderId);
     }

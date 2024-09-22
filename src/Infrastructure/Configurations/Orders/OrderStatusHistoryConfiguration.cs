@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations;
+namespace Infrastructure.Configurations.Orders;
 
 public class OrderStatusHistoryConfiguration : IEntityTypeConfiguration<OrderStatusHistory>
 {
