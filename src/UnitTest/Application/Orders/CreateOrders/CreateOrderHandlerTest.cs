@@ -1,5 +1,5 @@
 ﻿using Application.Orders.UseCases.CreateOrders;
-using Domain.Orders;
+using Domain.Orders.Entities;
 using Domain.Products;
 using Domain.Shared.Contracts;
 using FluentAssertions;

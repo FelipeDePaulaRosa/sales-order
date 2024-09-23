@@ -1,6 +1,7 @@
-﻿using Domain.Shared.Entities;
+﻿using Domain.Orders.DomainEvents;
+using Domain.Shared.Entities;
 
-namespace Domain.Orders;
+namespace Domain.Orders.Entities;
 
 public class Order : AggregateRoot<Guid>
 {
@@ -49,6 +50,7 @@ public class Order : AggregateRoot<Guid>
     {
         Status = new OrderStatus(OrderStatusEnum.Created);
         AddStatusHistory(OrderStatusEnum.Created);
+        AddDomainEvent(new CreateOrderDomainEvent(this));
     }
 
     public void MarkStatusAsUpdated()

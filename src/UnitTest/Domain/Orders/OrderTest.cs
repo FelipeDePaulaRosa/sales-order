@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Domain.Shared.Exceptions;
 using FluentAssertions;
 using UnitTest.TestHelpers.Builders.Orders;

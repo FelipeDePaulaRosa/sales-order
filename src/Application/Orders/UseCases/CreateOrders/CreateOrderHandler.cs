@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Domain.Shared.Contracts;
 using MediatR;
 

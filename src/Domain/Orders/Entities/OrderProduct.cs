@@ -2,7 +2,7 @@
 using Domain.Shared.Entities;
 using Domain.Shared.ValueObjects;
 
-namespace Domain.Orders;
+namespace Domain.Orders.Entities;
 
 public class OrderProduct : Entity<Guid>
 {
