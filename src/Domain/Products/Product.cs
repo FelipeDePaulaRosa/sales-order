@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Domain.Shared.Entities;
 using Domain.Shared.ValueObjects;
 

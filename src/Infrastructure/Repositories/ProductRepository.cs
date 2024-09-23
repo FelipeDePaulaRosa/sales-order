@@ -7,7 +7,8 @@ namespace Infrastructure.Repositories;
 
 public class ProductRepository : Repository<Product, Guid>, IProductRepository
 {
-    public ProductRepository(OrderDbContext context) : base(context)
+    public ProductRepository(OrderDbContext context,
+        IDomainEventNotification<Guid> domainEventNotification) : base(context, domainEventNotification)
     {
     }
 

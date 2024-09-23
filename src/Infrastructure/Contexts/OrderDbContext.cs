@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Domain.Products;
 using Infrastructure.Configurations.Orders;
 using Infrastructure.Configurations.Products;

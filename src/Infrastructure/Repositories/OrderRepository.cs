@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Domain.Shared.Contracts;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,8 @@ namespace Infrastructure.Repositories;
 
 public class OrderRepository : Repository<Order, Guid>, IOrderRepository
 {
-    public OrderRepository(OrderDbContext context) : base(context)
+    public OrderRepository(OrderDbContext context,
+        IDomainEventNotification<Guid> domainEventNotification) : base(context, domainEventNotification)
     {
     }
 

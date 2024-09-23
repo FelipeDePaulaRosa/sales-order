@@ -1,6 +1,6 @@
 ﻿using Domain.Shared.Exceptions;
 
-namespace Domain.Orders;
+namespace Domain.Orders.Entities;
 
 public class OrderStatus
 {

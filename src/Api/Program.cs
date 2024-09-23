@@ -1,4 +1,5 @@
 using Api.Configuration;
+using Domain.Orders.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

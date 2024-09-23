@@ -6,6 +6,7 @@ using Domain.Shared.Validations;
 using FluentValidation;
 using Infrastructure.Contexts;
 using Infrastructure.Database;
+using Infrastructure.Events;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ public static class ApiIocContainer
             {
                 opt.Filters.Add(typeof(ExceptionFilter));
                 opt.Filters.Add(typeof(FluentValidationNotificationFilter));
+                opt.Filters.Add(typeof(DomainEventFilter));
             });
     }
 
@@ -57,5 +59,7 @@ public static class ApiIocContainer
         services.AddTransient<OrderDbContext>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IDomainEventNotification<Guid>, DomainEventNotification<Guid>>();
+        services.AddScoped<IEventPublisher<Guid>, EventPublisher<Guid>>();
     }
 }
