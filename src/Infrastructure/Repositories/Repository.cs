@@ -24,6 +24,14 @@ public class Repository<T, TKey> : IRepository<T, TKey>
         await FlushChangesAsync(saveChanges);
         return entry.Entity;
     }
+
+    public async Task<List<T>> CreateRangeAsync(List<T> entities, bool saveChanges = true)
+    {
+        await DbSet.AddRangeAsync(entities);
+        await FlushChangesAsync(saveChanges);
+        return entities;
+    }
+
     public async Task UpdateAsync(T entity, bool saveChanges = true)
     {
         DbSet.Update(entity);
@@ -34,7 +42,9 @@ public class Repository<T, TKey> : IRepository<T, TKey>
     {
         await _context.SaveChangesAsync();
     }
-    
+
+    public DbSet<T> GetDbSet() => DbSet;
+
     private async Task FlushChangesAsync(bool saveChanges)
     {
         if (saveChanges)
