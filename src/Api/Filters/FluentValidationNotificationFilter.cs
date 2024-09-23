@@ -2,16 +2,19 @@
 using CrossCutting.FluentValidationNotifications;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using ILogger = Serilog.ILogger;
 
 namespace Api.Filters;
 
 public class FluentValidationNotificationFilter : ActionFilterAttribute
 {
     private readonly IFluentValidationNotificationContext _notificationContext;
+    private readonly ILogger _logger;
 
-    public FluentValidationNotificationFilter(IFluentValidationNotificationContext notificationContext)
+    public FluentValidationNotificationFilter(IFluentValidationNotificationContext notificationContext, ILogger logger)
     {
         _notificationContext = notificationContext;
+        _logger = logger;
     }
 
     public override async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
@@ -23,6 +26,7 @@ public class FluentValidationNotificationFilter : ActionFilterAttribute
 
             var apiResponse = new { Errors = _notificationContext.Notifications };
             var responseContent = JsonConvert.SerializeObject(apiResponse);
+            _logger.Error("Validation errors: {errors}", responseContent);
             await context.HttpContext.Response.WriteAsync(responseContent);
             return;
         }

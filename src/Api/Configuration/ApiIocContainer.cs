@@ -10,6 +10,7 @@ using Infrastructure.Events;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace Api.Configuration;
 
@@ -32,6 +33,20 @@ public static class ApiIocContainer
         RegisterValidators(services);
         RegisterMediatR(services);
         RegisterDependencies(services);
+    }
+
+    public static void RegisterLogServices(this WebApplicationBuilder builder, IConfiguration configuration)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        builder.Host.UseSerilog((context, services, configuration) => 
+            configuration.ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services));
     }
 
     private static void RegisterDatabase(IServiceCollection services, IConfiguration configuration)

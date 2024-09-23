@@ -1,7 +1,8 @@
 using Api.Configuration;
-using Domain.Orders.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.RegisterLogServices(builder.Configuration);
 
 builder.Services.RegisterApiServices(builder.Configuration);
 
