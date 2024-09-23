@@ -55,5 +55,6 @@ public static class ApiIocContainer
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IFluentValidationNotificationContext, FluentValidationNotificationContext>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
     }
 }

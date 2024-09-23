@@ -34,6 +34,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderRequest, CreateOrde
         
         order.CalcAmount();
         
+        //TODO: Remove quantity of products of stock
         var response = await _orderRepository.CreateAsync(order);
         
         return new CreateOrderResponse

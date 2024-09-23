@@ -21,6 +21,7 @@ public class CreateOrderProductRequestValidator : AbstractValidator<CreateOrderP
         
         When(x => Product is not null, () =>
         {
+            //TODO: When Active validate Quantity and Stock
             RuleFor(x => x.Quantity)
                 .GreaterThan(0)
                 .WithMessage(x => $"Product '{x.ProductId}' must have a quantity greater than 0");
