@@ -59,7 +59,7 @@ public static class ApiIocContainer
         services.AddTransient<OrderDbContext>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IDomainEventNotification<Guid>, DomainEventNotification<Guid>>();
-        services.AddScoped<IEventPublisher<Guid>, EventPublisher<Guid>>();
+        services.AddScoped<IDomainEventNotification, DomainEventNotification>();
+        services.AddScoped<IEventPublisher, EventPublisher>();
     }
 }

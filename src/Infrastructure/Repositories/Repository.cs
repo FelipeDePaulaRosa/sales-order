@@ -11,9 +11,9 @@ public class Repository<T, TKey> : IRepository<T, TKey>
     private readonly DbContext _context;
     protected readonly DbSet<T> DbSet;
     protected readonly IQueryable<T> DbSetNt;
-    private readonly IDomainEventNotification<TKey> _domainEventNotification;
+    private readonly IDomainEventNotification _domainEventNotification;
 
-    protected Repository(DbContext context, IDomainEventNotification<TKey> domainEventNotification)
+    protected Repository(DbContext context, IDomainEventNotification domainEventNotification)
     {
         _context = context;
         _domainEventNotification = domainEventNotification;
@@ -68,7 +68,7 @@ public class Repository<T, TKey> : IRepository<T, TKey>
     private async Task PublishDomainEvents(T entity)
     {
         var domainEvents = entity.DomainEvents.ToList();
-        domainEvents.ForEach(x => x.Id = entity.Id);
+        domainEvents.ForEach(x => x.Id = entity.Id.ToString());
         entity.ClearDomainEvents();
         foreach (var domainEvent in domainEvents)
         {

@@ -5,10 +5,10 @@ namespace Api.Filters;
 
 public class DomainEventFilter : ActionFilterAttribute
 {
-    private readonly IDomainEventNotification<Guid> _domainEventNotification;
-    private readonly IEventPublisher<Guid> _eventPublisher;
+    private readonly IDomainEventNotification _domainEventNotification;
+    private readonly IEventPublisher _eventPublisher;
 
-    public DomainEventFilter(IDomainEventNotification<Guid> domainEventNotification, IEventPublisher<Guid> eventPublisher)
+    public DomainEventFilter(IDomainEventNotification domainEventNotification, IEventPublisher eventPublisher)
     {
         _domainEventNotification = domainEventNotification;
         _eventPublisher = eventPublisher;

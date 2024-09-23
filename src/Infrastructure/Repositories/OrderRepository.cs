@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories;
 public class OrderRepository : Repository<Order, Guid>, IOrderRepository
 {
     public OrderRepository(OrderDbContext context,
-        IDomainEventNotification<Guid> domainEventNotification) : base(context, domainEventNotification)
+        IDomainEventNotification domainEventNotification) : base(context, domainEventNotification)
     {
     }
 

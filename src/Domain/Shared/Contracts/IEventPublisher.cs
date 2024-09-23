@@ -1,7 +1,7 @@
 ﻿namespace Domain.Shared.Contracts;
 
-public interface IEventPublisher<TKey> where TKey : notnull
+public interface IEventPublisher
 {
     Task PublishAsync<TEvent>(TEvent @event)
-        where TEvent : IDomainEvent<TKey>;
+        where TEvent : IDomainEvent;
 }

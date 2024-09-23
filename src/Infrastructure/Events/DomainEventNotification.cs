@@ -2,12 +2,11 @@
 
 namespace Infrastructure.Events;
 
-public class DomainEventNotification<TKey> : IDomainEventNotification<TKey>
-    where TKey : notnull
+public class DomainEventNotification : IDomainEventNotification
 {
-    public List<IDomainEvent<TKey>> Events { get; } = new();
+    public List<IDomainEvent> Events { get; } = new();
 
-    public async Task SendAsync(IDomainEvent<TKey> domainEvent)
+    public async Task SendAsync(IDomainEvent domainEvent)
     {
         Events.Add(domainEvent);
     }

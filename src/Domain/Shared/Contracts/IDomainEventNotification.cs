@@ -1,8 +1,7 @@
 ﻿namespace Domain.Shared.Contracts;
 
-public interface IDomainEventNotification<TKey>
-    where TKey : notnull
+public interface IDomainEventNotification
 {
-    public List<IDomainEvent<TKey>> Events { get; }
-    Task SendAsync(IDomainEvent<TKey> domainEvent);
+    public List<IDomainEvent> Events { get; }
+    Task SendAsync(IDomainEvent domainEvent);
 }

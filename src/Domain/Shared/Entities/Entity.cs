@@ -9,10 +9,10 @@ public abstract class Entity<TKey> : IEntity<TKey>
     [Key]
     public TKey Id { get; protected set; } = default!;
     
-    private List<IDomainEvent<TKey>> _domainEvents = new();
-    public List<IDomainEvent<TKey>> DomainEvents => _domainEvents.ToList();
+    private List<IDomainEvent> _domainEvents = new();
+    public List<IDomainEvent> DomainEvents => _domainEvents.ToList();
 
-    protected void AddDomainEvent(IDomainEvent<TKey> domainEvent)
+    protected void AddDomainEvent(IDomainEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
     }
