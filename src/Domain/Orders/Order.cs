@@ -13,28 +13,36 @@ public class Order : AggregateRoot<Guid>
     public Guid MerchantId { get; private set; }
     public List<OrderStatusHistory> StatusHistory { get; } = new();
     public List<OrderProduct> Products { get; } = new();
-    //TODO: List<Discount> OrderDiscounts { get; } = new();
 
-    private Order() { }
+    private Order()
+    {
+    }
 
     public Order(
         string number,
         DateTime saleDate,
-        decimal amount,
         Guid customerId,
         Guid merchantId)
     {
         Number = number;
         SaleDate = saleDate;
-        Amount = Money.FromDecimal(amount); //TODO: Calc amount from products and discounts
         MarkStatusAsCreated();
         IsCanceled = false;
         CustomerId = customerId;
         MerchantId = merchantId;
     }
-    
+
+    public void AddProduct(Guid productId, int quantity, decimal unitPrice, decimal discount)
+    {
+        Products.Add(new OrderProduct(
+            productId,
+            quantity,
+            unitPrice,
+            discount));
+    }
+
     public decimal GetAmountValue() => Amount.GetValueFromCents();
-    
+
     public OrderStatusEnum GetCurrentStatusEnum() => Status.Status;
 
     private void MarkStatusAsCreated()
@@ -58,4 +66,10 @@ public class Order : AggregateRoot<Guid>
 
     private void AddStatusHistory(OrderStatusEnum status)
         => StatusHistory.Add(new OrderStatusHistory(status));
+
+    public void CalcAmount()
+    {
+        var amount = Products.Sum(x => x.Amount.GetValueFromCents());
+        Amount = Money.FromDecimal(amount);
+    }
 }

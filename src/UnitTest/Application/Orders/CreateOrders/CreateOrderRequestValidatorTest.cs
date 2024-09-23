@@ -1,6 +1,8 @@
 ﻿using Application.Orders.UseCases.CreateOrders;
+using Domain.Products;
 using FluentValidation.TestHelper;
 using UnitTest.TestHelpers.InMemoryDatabaseHelpers;
+using UnitTest.TestHelpers.SeedInjectors.Products;
 using Xunit;
 
 namespace UnitTest.Application.Orders.CreateOrders;
@@ -8,11 +10,17 @@ namespace UnitTest.Application.Orders.CreateOrders;
 public class CreateOrderRequestValidatorTest
 {
     private readonly CreateOrderRequestValidator _validator;
+    private List<Product> _products;
 
     public CreateOrderRequestValidatorTest()
     {
         var inMemoryRepository = InMemoryRepositoryFactory.GetInstance();
-        _validator = new CreateOrderRequestValidator(inMemoryRepository.OrderRepository);
+        var orderRepository = inMemoryRepository.OrderRepository;
+        var productRepository = inMemoryRepository.ProductRepository;
+        _products = ProductSeedInjector.Inject(productRepository);
+        _validator = new CreateOrderRequestValidator(
+            orderRepository,
+            productRepository);
     }
 
     [Fact]
@@ -20,11 +28,23 @@ public class CreateOrderRequestValidatorTest
     {
         var model = new CreateOrderRequest
         {
-            Amount = 2.5m,
             Number = "000000000000000000X1",
             SaleDate = DateTime.UtcNow,
             CustomerId = Guid.NewGuid(),
-            MerchantId = Guid.NewGuid()
+            MerchantId = Guid.NewGuid(),
+            Products = new List<CreateOrderProductRequest>
+            {
+                new()
+                {
+                    ProductId = _products[0].Id,
+                    Quantity = 1
+                },
+                new()
+                {
+                    ProductId = _products[1].Id,
+                    Quantity = 2
+                }
+            }
         };
         
         var result = _validator.TestValidate(model);
@@ -44,6 +64,5 @@ public class CreateOrderRequestValidatorTest
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Number);
         result.ShouldHaveValidationErrorFor(x => x.SaleDate);
-        result.ShouldHaveValidationErrorFor(x => x.Amount);
     }
 }

@@ -31,4 +31,7 @@ public class Product : AggregateRoot<Guid>
         Discount = new Discount(discount);
         Stock = stock;
     }
+    
+    public decimal GetPrice() => UnitPrice.GetValueFromCents();
+    public decimal GetDiscount() => Discount.ValueInPercentage;
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Orders;
+using Domain.Products;
 
 namespace UnitTest.TestHelpers.Builders.Orders;
 
@@ -6,9 +7,9 @@ public class OrderBuilder
 {
     private string _number = "123";
     private DateTime _saleDate = DateTime.UtcNow;
-    private decimal _amount = 100.00m;
     private Guid _customerId = Guid.NewGuid();
     private Guid _merchantId = Guid.NewGuid();
+    private List<OrderProduct> _products = new();
 
     public OrderBuilder WithNumber(string number)
     {
@@ -19,12 +20,6 @@ public class OrderBuilder
     public OrderBuilder WithSaleDate(DateTime saleDate)
     {
         _saleDate = saleDate;
-        return this;
-    }
-
-    public OrderBuilder WithAmount(decimal amount)
-    {
-        _amount = amount;
         return this;
     }
 
@@ -39,9 +34,23 @@ public class OrderBuilder
         _merchantId = merchantId;
         return this;
     }
+    
+    public OrderBuilder WithProducts(List<Dictionary<Product, int>> products)
+    {
+        products.ForEach(x =>
+        {
+            var product = x.Keys.First();
+            var quantity = x.Values.First();
+            _products.Add(new OrderProduct(product.Id, quantity, product.GetPrice(), product.GetDiscount()));
+        });
+        
+        return this;
+    }
 
     public Order Build()
     {
-        return new Order(_number, _saleDate, _amount, _customerId, _merchantId);
+        Order order = new(_number, _saleDate, _customerId, _merchantId);
+        _products.ForEach(x => order.AddProduct(x.ProductId, x.Quantity, x.UnitPrice.GetValueFromCents(), x.Discount.ValueInPercentage));
+        return order;
     }
 }

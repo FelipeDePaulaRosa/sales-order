@@ -13,11 +13,15 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
 
     public async Task<Order?> GetOrderOrDefaultByNumberNoTrackAsync(string number)
     {
-        return await DbSetNt.FirstOrDefaultAsync(x => x.Number == number);
+        return await DbSetNt
+            .Include(x => x.Products)
+            .FirstOrDefaultAsync(x => x.Number == number);
     }
 
     public async Task<Order?> GetOrderByIdOrDefaultNoTrackAsync(Guid id)
     {
-        return await DbSetNt.FirstOrDefaultAsync(x => x.Id == id);
+        return await DbSetNt
+            .Include(x=> x.Products)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

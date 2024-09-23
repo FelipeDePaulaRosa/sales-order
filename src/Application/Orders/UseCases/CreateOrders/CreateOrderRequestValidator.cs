@@ -8,7 +8,7 @@ public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
 {
     private readonly IOrderRepository _orderRepository;
     
-    public CreateOrderRequestValidator(IOrderRepository orderRepository)
+    public CreateOrderRequestValidator(IOrderRepository orderRepository, IProductRepository productRepository)
     {
         _orderRepository = orderRepository;
         
@@ -23,10 +23,9 @@ public class CreateOrderRequestValidator : AbstractValidator<CreateOrderRequest>
             .Must(x => x.Date.Date >= DateTime.UtcNow.Date)
             .WithMessage("'SaleDate' must be greater than or equal to the current date");
 
-        RuleFor(x => x.Amount)
-            .NotNull()
-            .GreaterThan(0);
-
+        RuleForEach(x => x.Products)
+            .SetValidator(new CreateOrderProductRequestValidator(productRepository));
+        
         RuleFor(x => x.CustomerId)
             .NotNull();
 

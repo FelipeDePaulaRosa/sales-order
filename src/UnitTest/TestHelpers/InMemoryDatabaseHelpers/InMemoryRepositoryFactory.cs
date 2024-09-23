@@ -16,4 +16,5 @@ public class InMemoryRepositoryFactory
     public static InMemoryRepositoryFactory GetInstance() => new();
     
     public IOrderRepository OrderRepository => new OrderRepository(OrderDbContext);
+    public IProductRepository ProductRepository => new ProductRepository(OrderDbContext);
 }
