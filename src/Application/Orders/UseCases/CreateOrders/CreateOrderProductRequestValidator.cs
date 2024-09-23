@@ -17,22 +17,25 @@ public class CreateOrderProductRequestValidator : AbstractValidator<CreateOrderP
         RuleFor(x => x.ProductId)
             .NotNull()
             .Must(ProductExists)
-            .WithMessage("Product not found");
+            .WithMessage(x => $"Product '{x.ProductId}' not found");
         
         When(x => Product is not null, () =>
         {
-            //TODO: When Active validate Quantity and Stock
-            RuleFor(x => x.Quantity)
-                .GreaterThan(0)
-                .WithMessage(x => $"Product '{x.ProductId}' must have a quantity greater than 0");
+            When(ProductIsActive, () =>
+            {
+                RuleFor(x => x.Quantity)
+                    .GreaterThan(0)
+                    .WithMessage(x => $"Product '{x.ProductId}' must have a quantity greater than 0");
         
-            RuleFor(x => x)
-                .Must(ProductHasStock)
-                .WithMessage(x => $"Product {x.ProductId} out of stock");
-            
-            RuleFor(x => x)
-                .Must(ProductIsActive)
-                .WithMessage(x => $"Product {x.ProductId} is inactive");
+                RuleFor(x => x)
+                    .Must(ProductHasStock)
+                    .WithMessage(x => $"Product '{x.ProductId}' out of stock");
+            }).Otherwise(() =>
+            {
+                RuleFor(x => x)
+                    .Must(ProductIsActive)
+                    .WithMessage(x => $"Product '{x.ProductId}' is inactive");
+            });
         });
     }
     
@@ -51,5 +54,4 @@ public class CreateOrderProductRequestValidator : AbstractValidator<CreateOrderP
 
     private bool ProductIsActive(CreateOrderProductRequest request)
         => Product!.Active;
-
 }

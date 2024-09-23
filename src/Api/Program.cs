@@ -12,4 +12,6 @@ var app = builder.Build();
 
 app.UseApiConfig();
 
+app.InitializeDatabase();
+
 app.Run();

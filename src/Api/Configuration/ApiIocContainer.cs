@@ -53,7 +53,8 @@ public static class ApiIocContainer
     private static void RegisterDependencies(IServiceCollection services)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddSingleton<IFluentValidationNotificationContext, FluentValidationNotificationContext>();
+        services.AddScoped<IFluentValidationNotificationContext, FluentValidationNotificationContext>();
+        services.AddTransient<OrderDbContext>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
     }

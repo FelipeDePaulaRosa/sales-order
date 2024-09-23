@@ -13,8 +13,8 @@ public class FluentValidationNotificationFilter : ActionFilterAttribute
     {
         _notificationContext = notificationContext;
     }
-    
-    public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+
+    public override async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
     {
         if (_notificationContext.HasNotifications)
         {
@@ -22,11 +22,8 @@ public class FluentValidationNotificationFilter : ActionFilterAttribute
             context.HttpContext.Response.ContentType = "application/json";
 
             var apiResponse = new { Errors = _notificationContext.Notifications };
-
             var responseContent = JsonConvert.SerializeObject(apiResponse);
-
             await context.HttpContext.Response.WriteAsync(responseContent);
-
             return;
         }
 

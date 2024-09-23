@@ -1,16 +1,24 @@
 ﻿using Domain.Products;
-using Domain.Shared.Contracts;
+using Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
-namespace UnitTest.TestHelpers.SeedInjectors.Products;
+namespace Api.Configuration;
 
-public static class ProductSeedInjector
+public static class DataInitializer
 {
-    public static List<Product> Inject(IProductRepository repository)
-        => repository.CreateRangeAsync(GetProducts()).Result;
-    
-    private static List<Product> GetProducts()
+    public static void InitializeDatabase(this WebApplication app)
     {
-        return new List<Product>
+        using var scope = app.Services.CreateScope();
+        var orderDbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+        orderDbContext.Database.Migrate();
+        InjectProductsSeed(orderDbContext);
+    }
+
+    private static void InjectProductsSeed(OrderDbContext orderDbContext)
+    {
+        if(orderDbContext.Products.Any()) return;
+        
+        var products = new List<Product>
         {
             new(Guid.Parse("d8d26491-a874-43d9-b8de-bdc241fc805d"), "001", "Hammer", "ToolBrand", 1500, 2, 50, true),
             new(Guid.Parse("b5d35aa0-8b8c-4ff8-a595-7b27942b305c"), "002", "Screwdriver Set", "ToolBrand", 2500, 5, 100, true),
@@ -86,16 +94,19 @@ public static class ProductSeedInjector
             new(Guid.Parse("11b355d4-5e63-40ac-b928-56d013739f87"), "044", "Depth Gauge", "ToolBrand", 2000, 1, 80,
                 true),
             new(Guid.Parse("5b9fe7c1-a06d-420e-aad0-4baf29a489b7"), "045", "Feeler Gauge", "ToolBrand", 1000, 0, 40,
-                true),
+                false),
             new(Guid.Parse("80468545-e6ff-4f23-98f0-15922a24ea92"), "046", "Dial Indicator", "ToolBrand", 3500, 2, 140,
-                true),
+                false),
             new(Guid.Parse("f39949e3-2f44-49f5-808f-d352c392388e"), "047", "Torque Screwdriver", "ToolBrand", 4000, 3,
-                160, true),
+                160, false),
             new(Guid.Parse("7ee3e130-a095-46f3-afd7-3512cad7bd49"), "048", "Nut Driver Set", "ToolBrand", 2000, 1, 80,
-                true),
+                false),
             new(Guid.Parse("e1f43cdb-a852-40b1-9a43-b9b2da9fd276"), "049", "Hex Key Set", "ToolBrand", 1200, 0, 48,
-                true),
-            new(Guid.Parse("678dfbed-1313-4d86-b92b-3ed33907ff18"), "050", "Bit Set", "ToolBrand", 1500, 1, 60, true)
+                false),
+            new(Guid.Parse("678dfbed-1313-4d86-b92b-3ed33907ff18"), "050", "Bit Set", "ToolBrand", 1500, 1, 60, false)
         };
+
+        orderDbContext.Products.AddRange(products);
+        orderDbContext.SaveChanges();
     }
 }

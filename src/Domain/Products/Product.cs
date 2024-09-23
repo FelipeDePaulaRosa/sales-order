@@ -16,20 +16,24 @@ public class Product : AggregateRoot<Guid>
     
     private Product() { }
     
-    public Product(string code,
+    public Product(
+        Guid id,
+        string code,
         string name,
         string brand,
         decimal amount,
         decimal discount,
-        int stock)
+        int stock,
+        bool active)
     {
+        Id = id;
         Code = code;
         Name = name;
         Brand = brand;
-        Active = true;
         UnitPrice = Money.FromDecimal(amount);
         Discount = new Discount(discount);
         Stock = stock;
+        Active = active;
     }
     
     public decimal GetPrice() => UnitPrice.GetValueFromCents();
