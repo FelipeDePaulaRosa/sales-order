@@ -15,7 +15,7 @@ public class Order : AggregateRoot<Guid>
     public List<OrderStatusHistory> StatusHistory { get; } = new();
     public List<OrderProduct> Products { get; } = new();
 
-    private Order()
+    public Order()
     {
     }
 
@@ -46,7 +46,7 @@ public class Order : AggregateRoot<Guid>
 
     public OrderStatusEnum GetCurrentStatusEnum() => Status.Status;
 
-    private void MarkStatusAsCreated()
+    public void MarkStatusAsCreated()
     {
         Status = new OrderStatus(OrderStatusEnum.Created);
         AddStatusHistory(OrderStatusEnum.Created);
