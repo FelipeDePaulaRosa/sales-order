@@ -24,6 +24,8 @@ public class OrderStatusHistoryConfiguration : IEntityTypeConfiguration<OrderSta
             status.Property(x => x.Status)
                 .IsRequired()
                 .HasColumnName("Status");
+            
+            status.Ignore(x => x.Description);
         });
 
         builder.Property(x => x.CreatedAt);

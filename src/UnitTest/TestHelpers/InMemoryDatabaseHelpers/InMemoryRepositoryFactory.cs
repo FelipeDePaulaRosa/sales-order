@@ -8,7 +8,7 @@ namespace UnitTest.TestHelpers.InMemoryDatabaseHelpers;
 public class InMemoryRepositoryFactory
 {
     public readonly OrderDbContext OrderDbContext;
-    private readonly IDomainEventNotification _domainEventNotification;
+    public readonly IDomainEventNotification _domainEventNotification;
     
     private InMemoryRepositoryFactory()
     {

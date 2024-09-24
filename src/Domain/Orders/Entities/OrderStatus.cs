@@ -5,6 +5,7 @@ namespace Domain.Orders.Entities;
 public class OrderStatus
 {
     public OrderStatusEnum Status { get; private set; }
+    public string Description => Status.ToString();
     private Dictionary<OrderStatusEnum, List<OrderStatusEnum>> AllowedTransitions { get; set; } = new();
     
     private OrderStatus() { }

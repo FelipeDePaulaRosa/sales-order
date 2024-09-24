@@ -14,7 +14,7 @@ public class Product : AggregateRoot<Guid>
     public Discount Discount { get; private set; }
     public int Stock { get; private set; }
     
-    private Product() { }
+    public Product() { }
     
     public Product(
         Guid id,
