@@ -25,14 +25,19 @@ Para executar a aplicação, siga os passos abaixo:
 ```bash
 docker-compose up -d
 ```
-3. Execute a aplicação utilizando o comando:
+3. Execute a aplicação utilizando o comando na raiz do projeto:
 ```bash
-dotnet run --project src/WebApi/WebApi.csproj
+dotnet run --project src/Api/Api.csproj
 ```
 
+## Swagger
+A aplicação possui a documentação da API gerada automaticamente pelo Swagger. Para acessar a documentação, acesse a URL abaixo:
+``` 
+https://localhost:7065/swagger
+```
 **Observação**: Ao executar o projeto as migrations e seeds serão executadas automaticamente.
-## Arquitetura Utilizada
 
+## Arquitetura Utilizada
 Domain-Driven Design (DDD) com Clean Architecture  
 A aplicação segue os princípios do Domain-Driven Design (DDD) e Clean Architecture. A estrutura do projeto é dividida em camadas, cada uma com responsabilidades bem definidas:
 
@@ -44,8 +49,7 @@ A aplicação segue os princípios do Domain-Driven Design (DDD) e Clean Archite
 - **UnitTest**: contém os testes unitários e de integração da aplicação.
 
 ## Padrões e Bibliotecas Utilizadas
-
-### Mediator
+### Mediator e MediatR
 O padrão de design Mediator é utilizado para gerenciar a comunicação entre objetos de forma desacoplada. Na aplicação, o Mediator é utilizado para orquestrar os casos de uso (use cases) e os comandos (commands). A biblioteca MediatR é utilizada para implementar este padrão, facilitando a comunicação entre os handlers e os comandos/queries.
 
 ### FluentValidation
@@ -55,13 +59,19 @@ Em conjunto ao MediatoR, os validators são executados automaticamente antes de 
 ### Bogus
 A biblioteca Bogus é utilizada para gerar dados fictícios para os testes de unitários. Com ela, é possível gerar dados aleatórios para os testes de forma simples e rápida.
 
-## Swagger
+### Serilog
+A biblioteca Serilog é utilizada para realizar o log da aplicação. Na aplicação, o Serilog é configurado para logar as informações no console e em arquivos de log.
 
-A aplicação possui a documentação da API gerada automaticamente pelo Swagger. Para acessar a documentação, acesse a URL abaixo:
+## Eventos de Domínio
 
-``` 
-https://localhost:7065/swagger
-```
+A aplicação possui eventos de domínio que são disparados em determinadas ações da aplicação. Os eventos são utilizados para notificar sobre a ocorrência de um evento específico e comunicar com outros serviços.  
+Os eventos de domínio são disparados sempre que ocorre uma operação Create ou Update no repository, onde o DomainEventFilter irá capturar e utilizar o EventPublisher para publicar cada um. A publicação não possui message broker, sendo apenas realizado um log com Serilog.  
+### Eventos:  
+  - **CreateOrderDomainEvent**: Disparado quando um pedido de venda é criado.
+  - **CreateOrderDomainEvent**: Disparado quando um pedido de venda é atualizado.
+  - **CancelOrderDomainEvent**: Disparado quando um pedido de venda é cancelado.
+  - **AddStockOfProductDomainEvent**: Disparado para adicionar a quantidade de produto ao estoque.
+  - **RemoveStockOfProductDomainEvent**: Disparado para remover a quantidade de produto ao estoque.
 
 ## API's
 
