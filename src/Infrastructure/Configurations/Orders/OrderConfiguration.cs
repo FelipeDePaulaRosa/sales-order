@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -35,6 +35,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             status.Property(x => x.Status)
                 .IsRequired()
                 .HasColumnName("Status");
+            
+            status.Ignore(x => x.Description);
         });
 
         builder.Property(x => x.IsCanceled)

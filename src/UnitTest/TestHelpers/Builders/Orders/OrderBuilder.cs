@@ -1,5 +1,5 @@
-﻿using Domain.Orders;
-using Domain.Products;
+﻿using Domain.Orders.Entities;
+using Domain.Products.Entities;
 
 namespace UnitTest.TestHelpers.Builders.Orders;
 

@@ -1,8 +1,8 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Domain.Shared.Entities;
 using Domain.Shared.ValueObjects;
 
-namespace Domain.Products;
+namespace Domain.Products.Entities;
 
 public class Product : AggregateRoot<Guid>
 {
@@ -14,7 +14,7 @@ public class Product : AggregateRoot<Guid>
     public Discount Discount { get; private set; }
     public int Stock { get; private set; }
     
-    private Product() { }
+    public Product() { }
     
     public Product(
         Guid id,

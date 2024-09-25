@@ -2,6 +2,8 @@ using Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.RegisterLogServices(builder.Configuration);
+
 builder.Services.RegisterApiServices(builder.Configuration);
 
 builder.Services.RegisterControllers();

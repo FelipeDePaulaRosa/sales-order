@@ -1,10 +1,11 @@
 ﻿using Domain.Shared.Exceptions;
 
-namespace Domain.Orders;
+namespace Domain.Orders.Entities;
 
 public class OrderStatus
 {
     public OrderStatusEnum Status { get; private set; }
+    public string Description => Status.ToString();
     private Dictionary<OrderStatusEnum, List<OrderStatusEnum>> AllowedTransitions { get; set; } = new();
     
     private OrderStatus() { }
@@ -47,12 +48,13 @@ public class OrderStatus
         => new() { OrderStatusEnum.Updated, OrderStatusEnum.Canceled };
     
     private static List<OrderStatusEnum> PossibleStatusWhenUpdated()
-        => new() { OrderStatusEnum.Canceled };
+        => new() { OrderStatusEnum.Updated, OrderStatusEnum.Canceled };
     
     private static List<OrderStatusEnum> PossibleStatusWhenCanceled() => new();
     
     private void VerifyTransition(OrderStatusEnum newStatus)
     {
+        ConfigurePossibleTransitions();
         if (!CanTransitionTo(newStatus))
             throw new SalesOrderApiException($"Cannot change status from {Status} to {newStatus}");
     }

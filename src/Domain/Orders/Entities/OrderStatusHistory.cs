@@ -1,6 +1,6 @@
 ﻿using Domain.Shared.Entities;
 
-namespace Domain.Orders;
+namespace Domain.Orders.Entities;
 
 public class OrderStatusHistory : Entity<Guid>
 {

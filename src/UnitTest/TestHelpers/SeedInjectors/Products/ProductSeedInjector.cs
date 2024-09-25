@@ -1,4 +1,4 @@
-﻿using Domain.Products;
+﻿using Domain.Products.Entities;
 using Domain.Shared.Contracts;
 
 namespace UnitTest.TestHelpers.SeedInjectors.Products;

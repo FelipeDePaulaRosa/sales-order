@@ -2,21 +2,22 @@
 using Domain.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using ILogger = Serilog.ILogger;
 
 namespace Api.Filters;
 
 public class ExceptionFilter : IExceptionFilter
 {
-    private readonly ILogger<ExceptionFilter> _logger;
+    private readonly ILogger _logger;
 
-    public ExceptionFilter(ILogger<ExceptionFilter> logger)
+    public ExceptionFilter(ILogger logger)
     {
         _logger = logger;
     }
 
     public void OnException(ExceptionContext context)
     {
-        _logger.LogError(context.Exception, "Unhandled exception occurred on {RequestPath}", context.HttpContext.Request.Path);
+        _logger.Error(context.Exception, "Unhandled exception occurred on {RequestPath}", context.HttpContext.Request.Path);
 
         var exception = context.Exception;
         

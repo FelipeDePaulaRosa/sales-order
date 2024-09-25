@@ -1,4 +1,4 @@
-﻿using Domain.Products;
+﻿using Domain.Products.Entities;
 using Domain.Shared.Contracts;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,8 @@ namespace Infrastructure.Repositories;
 
 public class ProductRepository : Repository<Product, Guid>, IProductRepository
 {
-    public ProductRepository(OrderDbContext context) : base(context)
+    public ProductRepository(OrderDbContext context,
+        IDomainEventNotification domainEventNotification) : base(context, domainEventNotification)
     {
     }
 

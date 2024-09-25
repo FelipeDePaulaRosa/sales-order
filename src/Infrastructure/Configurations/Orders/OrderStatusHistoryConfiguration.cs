@@ -1,4 +1,4 @@
-﻿using Domain.Orders;
+﻿using Domain.Orders.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,6 +24,8 @@ public class OrderStatusHistoryConfiguration : IEntityTypeConfiguration<OrderSta
             status.Property(x => x.Status)
                 .IsRequired()
                 .HasColumnName("Status");
+            
+            status.Ignore(x => x.Description);
         });
 
         builder.Property(x => x.CreatedAt);
