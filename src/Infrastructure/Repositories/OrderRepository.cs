@@ -17,6 +17,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     {
         return await DbSetNt
             .Include(x => x.Products)
+            .Include(x => x.StatusHistory)
             .FirstOrDefaultAsync(x => x.Number == number);
     }
 
@@ -24,6 +25,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     {
         return await DbSetNt
             .Include(x=> x.Products)
+            .Include(x => x.StatusHistory)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -31,6 +33,7 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
     {
         return await DbSet
             .Include(x => x.Products)
+            .Include(x => x.StatusHistory)
             .FirstOrDefaultAsync(x => x.Id == requestId) 
             ?? throw new SalesOrderNotFoundException($"Order with id: {requestId} not found");
     }

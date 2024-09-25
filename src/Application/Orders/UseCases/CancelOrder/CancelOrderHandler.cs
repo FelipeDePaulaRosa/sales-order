@@ -15,7 +15,9 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderRequest, CancelOrde
     public async Task<CancelOrderResponse> Handle(CancelOrderRequest request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderByIdAsync(request.Id);
-        order.Cancel();
+        if (order.IsCanceled)
+            return new CancelOrderResponse();
+        order.CancelOrder();
         await _orderRepository.UpdateAsync(order);
         return new CancelOrderResponse();
     }
