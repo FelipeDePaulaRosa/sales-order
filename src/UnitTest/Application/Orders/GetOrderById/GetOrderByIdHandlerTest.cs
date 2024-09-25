@@ -24,7 +24,7 @@ public class GetOrderByIdHandlerTest
     public async Task Handle_ShouldReturnOrder_WhenOrderExists()
     {
         var orderId = Guid.NewGuid();
-        var products = ProductFaker.GenerateSpecificCountOfProducts(3);
+        var products = ProductFaker.GenerateProductList(3);
         var order = OrderFaker.GenerateOrderAsCreated(orderId, products);
 
         await _orderRepositoryMock.CreateAsync(order);
