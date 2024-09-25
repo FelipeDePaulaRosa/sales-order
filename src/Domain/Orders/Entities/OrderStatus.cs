@@ -48,12 +48,13 @@ public class OrderStatus
         => new() { OrderStatusEnum.Updated, OrderStatusEnum.Canceled };
     
     private static List<OrderStatusEnum> PossibleStatusWhenUpdated()
-        => new() { OrderStatusEnum.Canceled };
+        => new() { OrderStatusEnum.Updated, OrderStatusEnum.Canceled };
     
     private static List<OrderStatusEnum> PossibleStatusWhenCanceled() => new();
     
     private void VerifyTransition(OrderStatusEnum newStatus)
     {
+        ConfigurePossibleTransitions();
         if (!CanTransitionTo(newStatus))
             throw new SalesOrderApiException($"Cannot change status from {Status} to {newStatus}");
     }

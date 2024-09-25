@@ -4,15 +4,15 @@ using Domain.Shared.Contracts;
 
 namespace Domain.Orders.DomainEvents;
 
-public class CreateOrderDomainEvent : IDomainEvent
+public class UpdateOrderDomainEvent : IDomainEvent
 {
     public string Id { get; set; }
-    public string GetEventName() => "create_order_domain_event";
+    public string GetEventName() => "update_order_domain_event";
 
     [JsonConstructor]
-    public CreateOrderDomainEvent() { }
+    public UpdateOrderDomainEvent() { }
     
-    public CreateOrderDomainEvent(Order order)
+    public UpdateOrderDomainEvent(Order order)
     {
         Id = order.Id.ToString();
     }

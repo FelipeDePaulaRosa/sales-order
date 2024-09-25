@@ -2,7 +2,7 @@
 using Domain.Shared.Entities;
 using Domain.Shared.ValueObjects;
 
-namespace Domain.Products;
+namespace Domain.Products.Entities;
 
 public class Product : AggregateRoot<Guid>
 {

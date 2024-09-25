@@ -1,4 +1,5 @@
 ﻿using Domain.Orders.DomainEvents;
+using Domain.Products.DomainEvents;
 using Domain.Shared.Entities;
 
 namespace Domain.Orders.Entities;
@@ -40,6 +41,8 @@ public class Order : AggregateRoot<Guid>
             quantity,
             unitPrice,
             discount));
+        
+        RemoveStockEvent(productId, quantity);
     }
 
     public decimal GetAmountValue() => Amount.GetValueFromCents();
@@ -57,6 +60,7 @@ public class Order : AggregateRoot<Guid>
     {
         Status = Status.ToUpdated();
         AddStatusHistory(OrderStatusEnum.Updated);
+        AddDomainEvent(new UpdateOrderDomainEvent(this));
     }
 
     public void MarkStatusAsCanceled()
@@ -71,7 +75,52 @@ public class Order : AggregateRoot<Guid>
 
     public void CalcAmount()
     {
-        var amount = Products.Sum(x => x.Amount.GetValueFromCents());
+        var amount = Products
+            .Where(x => !x.IsCanceled)
+            .Sum(x => x.Amount.GetValueFromCents());
         Amount = Money.FromDecimal(amount);
     }
+
+    public void UpdateOrder(string number,
+        DateTime saleDate,
+        Guid customerId,
+        Guid merchantId)
+    {
+        Number = number;
+        SaleDate = saleDate;
+        CustomerId = customerId;
+        MerchantId = merchantId;
+        MarkStatusAsUpdated();
+    }
+
+    public void UpdateProduct(Guid id, int quantity, bool isCanceled)
+    {
+        var product = Products.First(x => x.Id == id);
+        AddUpdateProductEvent(product, quantity, isCanceled);
+        product.Update(quantity, isCanceled);
+    }
+
+    private void AddUpdateProductEvent(OrderProduct product, int quantity, bool isCanceled)
+    {
+        if (isCanceled != product.IsCanceled)
+        {
+            if (isCanceled) AddStockEvent(product.Id, product.Quantity);
+            else RemoveStockEvent(product.Id, product.Quantity);
+        }
+        else
+        {
+            var diff = Math.Abs(product.Quantity - quantity);
+            if(diff == 0) return;
+            if (product.Quantity < quantity)
+                RemoveStockEvent(product.Id, diff);
+            else if (product.Quantity > quantity)
+                AddStockEvent(product.Id, diff);
+        }
+    }
+    
+    private void AddStockEvent(Guid productId, int quantity)
+        => AddDomainEvent(new AddStockOfProductDomainEvent(this, productId, quantity));
+
+    private void RemoveStockEvent(Guid productId, int quantity)
+        => AddDomainEvent(new RemoveStockOfProductDomainEvent(this, productId, quantity));
 }

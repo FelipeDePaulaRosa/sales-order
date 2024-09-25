@@ -1,4 +1,4 @@
-﻿using Domain.Products;
+﻿using Domain.Products.Entities;
 using Domain.Shared.Contracts;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
