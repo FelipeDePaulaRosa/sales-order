@@ -129,5 +129,27 @@ Os eventos de domínio são disparados sempre que ocorre uma operação Create o
     - **404 Not Found**: Pedido de venda não encontrado.
     - **500 Internal Server Error**: Erro interno no servidor.
   - **Observação**: Ao cancelar um pedido, o status do pedido é alterado para `Canceled`. Ao tentar cancelar um pedido que já foi cancelado, o sistema retornará sucesso sendo uma API idempotente (não houve alterações, mas o resultado esperado final já foi obtido).
+  
 
-
+- **GET /api/v1/products**: Retorna uma lista de produtos com paginação.
+  - **Query Params**:
+    - **PageNumber**: `int` - Número da página (opcional, padrão é 1).
+    - **PageSize**: `int` - Tamanho da página (opcional, padrão é 5, máximo é 50).
+  - **Response**:
+    - **200 OK**: Lista de produtos com paginação.
+      - **Content**:
+        - **products**: `List<Product>` - Lista de produtos.
+          - **id**: `Guid` - ID do produto.
+          - **code**: `string` - Código do produto.
+          - **name**: `string` - Nome do produto.
+          - **unitPrice**: `decimal` - Preço do produto.
+          - **discount**: `decimal` - Desconto do produto.
+          - **brand**: `string` - Marca do produto.
+          - **stock**: `int` - Quantidade em estoque.
+        - **pagination**: `Pagination` - Informações de paginação.
+          - **pageNumber**: `int` - Número da página atual.
+          - **pageSize**: `int` - Tamanho da página.
+          - **totalPages**: `int` - Total de páginas.
+          - **totalItems**: `int` - Total de itens.
+    - **400 Bad Request**: Erro de validação nos parâmetros da requisição.
+    - **500 Internal Server Error**: Erro interno no servidor.
