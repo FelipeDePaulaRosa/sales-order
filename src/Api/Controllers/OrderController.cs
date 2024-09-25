@@ -1,4 +1,5 @@
-﻿using Application.Orders.UseCases.CreateOrders;
+﻿using Application.Orders.UseCases.CancelOrder;
+using Application.Orders.UseCases.CreateOrders;
 using Application.Orders.UseCases.GetOrderById;
 using Application.Orders.UseCases.UpdateOrder;
 using MediatR;
@@ -33,5 +34,12 @@ public class OrderController : ApiController
         request.Id = id;
         var response = await Sender.Send(request);
         return Ok(response);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> CancelOrder([FromRoute] Guid id)
+    {
+        await Sender.Send(new CancelOrderRequest { Id = id });
+        return NoContent();
     }
 }
