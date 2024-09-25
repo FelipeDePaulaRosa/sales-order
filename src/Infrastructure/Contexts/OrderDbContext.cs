@@ -1,5 +1,5 @@
 ﻿using Domain.Orders.Entities;
-using Domain.Products;
+using Domain.Products.Entities;
 using Infrastructure.Configurations.Orders;
 using Infrastructure.Configurations.Products;
 using Microsoft.EntityFrameworkCore;

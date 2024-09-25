@@ -1,4 +1,4 @@
-﻿using Domain.Products;
+﻿using Domain.Products.Entities;
 using Domain.Shared.Entities;
 using Domain.Shared.ValueObjects;
 
@@ -32,4 +32,10 @@ public class OrderProduct : Entity<Guid>
         => Money.FromDecimal(GetValueAppliedDiscount * Quantity);
     
     private decimal GetValueAppliedDiscount => Discount.ApplyDiscount(UnitPrice.GetValueFromCents());
+
+    public void Update(int quantity, bool isCanceled)
+    {
+        Quantity = quantity;
+        IsCanceled = isCanceled;
+    }
 }

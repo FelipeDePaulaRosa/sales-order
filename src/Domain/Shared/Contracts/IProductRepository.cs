@@ -1,4 +1,4 @@
-﻿using Domain.Products;
+﻿using Domain.Products.Entities;
 
 namespace Domain.Shared.Contracts;
 

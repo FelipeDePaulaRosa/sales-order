@@ -1,5 +1,6 @@
 ﻿using Domain.Orders.Entities;
 using Domain.Shared.Contracts;
+using Domain.Shared.Exceptions;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,5 +25,13 @@ public class OrderRepository : Repository<Order, Guid>, IOrderRepository
         return await DbSetNt
             .Include(x=> x.Products)
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Order> GetOrderByIdAsync(Guid requestId)
+    {
+        return await DbSet
+            .Include(x => x.Products)
+            .FirstOrDefaultAsync(x => x.Id == requestId) 
+            ?? throw new SalesOrderNotFoundException($"Order with id: {requestId} not found");
     }
 }

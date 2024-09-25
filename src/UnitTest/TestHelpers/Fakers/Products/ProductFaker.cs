@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using Domain.Orders.Entities;
-using Domain.Products;
+using Domain.Products.Entities;
 using Domain.Shared.ValueObjects;
 
 namespace UnitTest.TestHelpers.Fakers.Products;

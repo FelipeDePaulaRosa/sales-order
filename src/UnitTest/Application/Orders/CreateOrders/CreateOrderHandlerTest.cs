@@ -1,6 +1,6 @@
 ﻿using Application.Orders.UseCases.CreateOrders;
 using Domain.Orders.Entities;
-using Domain.Products;
+using Domain.Products.Entities;
 using Domain.Shared.Contracts;
 using FluentAssertions;
 using UnitTest.TestHelpers.InMemoryDatabaseHelpers;

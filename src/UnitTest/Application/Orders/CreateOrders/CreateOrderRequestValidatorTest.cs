@@ -1,5 +1,5 @@
 ﻿using Application.Orders.UseCases.CreateOrders;
-using Domain.Products;
+using Domain.Products.Entities;
 using FluentValidation.TestHelper;
 using UnitTest.TestHelpers.InMemoryDatabaseHelpers;
 using UnitTest.TestHelpers.SeedInjectors.Products;
