@@ -16,9 +16,7 @@ public class Order : AggregateRoot<Guid>
     public List<OrderStatusHistory> StatusHistory { get; } = new();
     public List<OrderProduct> Products { get; } = new();
 
-    public Order()
-    {
-    }
+    public Order(){ }
 
     public Order(
         string number,
@@ -68,6 +66,7 @@ public class Order : AggregateRoot<Guid>
         Status = Status.ToCanceled();
         IsCanceled = true;
         AddStatusHistory(OrderStatusEnum.Canceled);
+        AddDomainEvent(new CancelOrderDomainEvent(this));
     }
 
     private void AddStatusHistory(OrderStatusEnum status)
@@ -98,6 +97,12 @@ public class Order : AggregateRoot<Guid>
         var product = Products.First(x => x.Id == id);
         AddUpdateProductEvent(product, quantity, isCanceled);
         product.Update(quantity, isCanceled);
+    }
+    
+    public void CancelOrder()
+    {
+        MarkStatusAsCanceled();
+        Products.ForEach(x => AddStockEvent(x.ProductId, x.Quantity));
     }
 
     private void AddUpdateProductEvent(OrderProduct product, int quantity, bool isCanceled)
