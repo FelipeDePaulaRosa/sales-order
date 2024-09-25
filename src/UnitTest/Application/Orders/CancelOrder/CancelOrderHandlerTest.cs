@@ -26,7 +26,7 @@ namespace UnitTest.Application.Orders.CancelOrder
         public async Task Handle_Should_Cancel_Order()
         {
             var orderId = Guid.NewGuid();
-            var products = ProductFaker.GenerateSpecificCountOfProducts();
+            var products = ProductFaker.GenerateProductList();
             var order = OrderFaker.GenerateOrderAsCreated(orderId, products);
             await _orderRepository.CreateAsync(order);
 
@@ -52,7 +52,7 @@ namespace UnitTest.Application.Orders.CancelOrder
         public async Task Handle_Should_Not_Cancel_Order_If_It_Is_Already_Canceled()
         {
             var orderId = Guid.NewGuid();
-            var products = ProductFaker.GenerateSpecificCountOfProducts();
+            var products = ProductFaker.GenerateProductList();
             var order = OrderFaker.GenerateOrderAsCreated(orderId, products);
             order.CancelOrder();
             await _orderRepository.CreateAsync(order);

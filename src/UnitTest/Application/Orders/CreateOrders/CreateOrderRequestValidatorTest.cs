@@ -1,8 +1,8 @@
 ﻿using Application.Orders.UseCases.CreateOrders;
 using Domain.Products.Entities;
 using FluentValidation.TestHelper;
+using UnitTest.TestHelpers.Fakers.Products;
 using UnitTest.TestHelpers.InMemoryDatabaseHelpers;
-using UnitTest.TestHelpers.SeedInjectors.Products;
 using Xunit;
 
 namespace UnitTest.Application.Orders.CreateOrders;
@@ -17,7 +17,8 @@ public class CreateOrderRequestValidatorTest
         var inMemoryRepository = InMemoryRepositoryFactory.GetInstance();
         var orderRepository = inMemoryRepository.OrderRepository;
         var productRepository = inMemoryRepository.ProductRepository;
-        _products = ProductSeedInjector.Inject(productRepository);
+        _products = ProductFaker.GenerateProductList();
+        productRepository.CreateRangeAsync(_products).Wait();
         _validator = new CreateOrderRequestValidator(
             orderRepository,
             productRepository);

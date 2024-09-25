@@ -3,8 +3,8 @@ using Domain.Orders.Entities;
 using Domain.Products.Entities;
 using Domain.Shared.Contracts;
 using FluentAssertions;
+using UnitTest.TestHelpers.Fakers.Products;
 using UnitTest.TestHelpers.InMemoryDatabaseHelpers;
-using UnitTest.TestHelpers.SeedInjectors.Products;
 using Xunit;
 
 namespace UnitTest.Application.Orders.CreateOrders;
@@ -13,21 +13,22 @@ public class CreateOrderHandlerTest
 {
     private readonly CreateOrderHandler _handler;
     private readonly IOrderRepository _orderRepository;
-    private readonly List<Product> _products;
+    private readonly IProductRepository _productRepository;
 
     public CreateOrderHandlerTest()
     {
         var inMemoryRepositoryFactory = InMemoryRepositoryFactory.GetInstance();
         _orderRepository = inMemoryRepositoryFactory.OrderRepository;
-        var productRepository = inMemoryRepositoryFactory.ProductRepository;
-        _handler = new CreateOrderHandler(_orderRepository, productRepository);
-        _products = ProductSeedInjector.Inject(productRepository);
+        _productRepository = inMemoryRepositoryFactory.ProductRepository;
+        _handler = new CreateOrderHandler(_orderRepository, _productRepository);
     }
 
     [Fact]
     public async Task Should_Create_Order_Successfully()
     {
-        var request = GetCreateOrderRequest();
+        var products = ProductFaker.GenerateProductList(2);
+        await _productRepository.CreateRangeAsync(products);
+        var request = GetCreateOrderRequest(products);
         var response = await _handler.Handle(request, CancellationToken.None);
 
         var createdOrder = await _orderRepository.GetOrderByIdOrDefaultNoTrackAsync(response.Id);
@@ -43,7 +44,7 @@ public class CreateOrderHandlerTest
         createdOrder.GetAmountValue().Should().Be(createdOrder.Products.Sum(x => x.Amount.GetValueFromCents()));
     }
 
-    private CreateOrderRequest GetCreateOrderRequest()
+    private CreateOrderRequest GetCreateOrderRequest(List<Product> products)
         => new CreateOrderRequest
         {
             Number = "000000000000000000X1",
@@ -54,12 +55,12 @@ public class CreateOrderHandlerTest
             {
                 new()
                 {
-                    ProductId = _products[0].Id,
+                    ProductId = products[0].Id,
                     Quantity = 1
                 },
                 new()
                 {
-                    ProductId = _products[1].Id,
+                    ProductId = products[1].Id,
                     Quantity = 2
                 }
             }

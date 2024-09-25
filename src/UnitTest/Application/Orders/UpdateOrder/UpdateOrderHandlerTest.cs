@@ -25,7 +25,7 @@ public class UpdateOrderHandlerTest
     [Fact]
     public async Task Should_Update_Order_With_New_Products()
     {
-        var productsSeed = ProductFaker.GenerateSpecificCountOfProducts();
+        var productsSeed = ProductFaker.GenerateProductList();
         await _productRepository.CreateRangeAsync(productsSeed);
 
         var products = productsSeed.GetRange(0, 2);
@@ -65,7 +65,7 @@ public class UpdateOrderHandlerTest
     [Fact]
     public async Task Should_AddStockEvent_When_ProductIsCanceled()
     {
-        var products = ProductFaker.GenerateSpecificCountOfProducts(1);
+        var products = ProductFaker.GenerateProductList(1);
         var order = OrderFaker.GenerateOrderAsCreated(Guid.NewGuid(), products);
         order = await _orderRepository.CreateAsync(order);
 
@@ -93,7 +93,7 @@ public class UpdateOrderHandlerTest
     [Fact]
     public async Task Should_RemoveStockEvent_When_ProductIsUncanceled()
     {
-        var products = ProductFaker.GenerateSpecificCountOfProducts(1);
+        var products = ProductFaker.GenerateProductList(1);
         var order = OrderFaker.GenerateOrderAsCreated(Guid.NewGuid(), products);
         var product = order.Products.First();
         order.UpdateProduct(order.Products.First().Id, product.Quantity, true);
@@ -123,7 +123,7 @@ public class UpdateOrderHandlerTest
     [Fact]
     public async Task Should_RemoveStockEvent_When_QuantityIncreases()
     {
-        var products = ProductFaker.GenerateSpecificCountOfProducts(1);
+        var products = ProductFaker.GenerateProductList(1);
         var order = OrderFaker.GenerateOrderAsCreated(Guid.NewGuid(), products);
         await _orderRepository.CreateAsync(order);
     
@@ -153,7 +153,7 @@ public class UpdateOrderHandlerTest
     [Fact]
     public async Task Should_AddStockEvent_When_QuantityDecreases()
     {
-        var products = ProductFaker.GenerateSpecificCountOfProducts(1);
+        var products = ProductFaker.GenerateProductList(1);
         var order = OrderFaker.GenerateOrderAsCreated(Guid.NewGuid(), products);
         await _orderRepository.CreateAsync(order);
     
@@ -183,7 +183,7 @@ public class UpdateOrderHandlerTest
     [Fact]
     public async Task Should_NotTriggerEvents_When_QuantityIsSame()
     {
-        var products = ProductFaker.GenerateSpecificCountOfProducts(1);
+        var products = ProductFaker.GenerateProductList(1);
         var order = OrderFaker.GenerateOrderAsCreated(Guid.NewGuid(), products);
         await _orderRepository.CreateAsync(order);
     

@@ -22,7 +22,7 @@ public static class ProductFaker
         return faker.Generate();
     }
     
-    public static List<Product> GenerateSpecificCountOfProducts(int count = 10, bool active = true)
+    public static List<Product> GenerateProductList(int count = 10, bool active = true)
     {
         List<Product> products = new();
         for (var i = 0; i < count; i++)
