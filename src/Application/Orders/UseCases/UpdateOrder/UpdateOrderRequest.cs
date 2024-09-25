@@ -3,21 +3,21 @@ using MediatR;
 
 namespace Application.Orders.UseCases.UpdateOrder;
 
-public record UpdateOrderRequest : IRequest<UpdateOrderResponse>
+public class UpdateOrderRequest : IRequest<UpdateOrderResponse>
 {
     [JsonIgnore]
     public Guid Id { get; set; }
-    public string Number { get; init; }
-    public DateTime SaleDate { get; init; }
-    public Guid CustomerId { get; init; }
-    public Guid MerchantId { get; init; }
-    public List<UpdateOrderProductRequest> Products { get; init; }
+    public string Number { get; set; }
+    public DateTime SaleDate { get; set; }
+    public Guid CustomerId { get; set; }
+    public Guid MerchantId { get; set; }
+    public List<UpdateOrderProductRequest> Products { get; set; } = new();
 }
 
-public record UpdateOrderProductRequest
+public class UpdateOrderProductRequest
 {
     public Guid? Id { get; set; }
-    public Guid ProductId { get; init; }
-    public int Quantity { get; init; }
-    public bool IsCanceled { get; init; }
+    public Guid ProductId { get; set; }
+    public int Quantity { get; set; }
+    public bool IsCanceled { get; set; }
 }
