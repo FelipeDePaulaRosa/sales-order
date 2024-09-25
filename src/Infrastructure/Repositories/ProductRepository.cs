@@ -18,4 +18,11 @@ public class ProductRepository : Repository<Product, Guid>, IProductRepository
             .Where(x => ids.Contains(x.Id))
             .ToListAsync();
     }
+    
+    public async Task<List<Product>> GetAllProductsNoTrackAsync()
+    {
+        return await DbSet
+            .AsNoTracking()
+            .ToListAsync();
+    }
 }
