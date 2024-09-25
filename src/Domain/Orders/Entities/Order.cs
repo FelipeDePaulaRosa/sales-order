@@ -123,4 +123,11 @@ public class Order : AggregateRoot<Guid>
 
     private void RemoveStockEvent(Guid productId, int quantity)
         => AddDomainEvent(new RemoveStockOfProductDomainEvent(this, productId, quantity));
+
+    public void Cancel()
+    {
+        MarkStatusAsCanceled();
+        AddDomainEvent(new CancelOrderDomainEvent(this));
+        Products.ForEach(x => AddStockEvent(x.ProductId, x.Quantity));
+    }
 }
